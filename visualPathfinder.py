@@ -21,7 +21,7 @@ start_pos_y = 10
 
 def PutSquaresOnScreen():
     global start_pos_x, start_pos_y
-    pygame.draw.rect(win, (0,0,0), (0,0,1100,700)) # Background
+    pygame.draw.rect(win, (0,0,0), (0,0,1100,690)) # Background
     start_pos_x = 10
     start_pos_y = 10
     for x in range(1,511):
