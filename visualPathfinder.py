@@ -42,6 +42,11 @@ def HideButtonClick():
     win.blit(hideButton, (275, 713))
 HideButtonClick()
 
+def CaptureScreen():
+    image = pygame.Surface((1210,690))
+    image.blit(win,(0,0),((0,0),(1210,690)))
+    pygame.image.save(image,'visualPathfinderCapture.png')
+
 # Set up the reset button
 resetButton_background = pygame.draw.rect(win, (200, 200, 200), (450, 695, 150, 50))
 resetButton = font.render('Reset (R)', True, (0, 0, 0))
@@ -51,6 +56,11 @@ win.blit(resetButton, (490, 713))
 startButton_background = pygame.draw.rect(win, (200, 200, 200), (650, 695, 150, 50))
 startButton = font.render('Start (Space)', True, (0, 0, 0))
 win.blit(startButton, (675, 713))
+
+# Set up the start button
+imageButton_background = pygame.draw.rect(win, (200, 200, 200), (850, 695, 150, 50))
+imageButton = font.render('Save as PNG', True, (0, 0, 0))
+win.blit(imageButton, (875, 713))
 
 def GetPositionOfSquare(index):
     x_pos = 10 + (index%30) * 40     # x value in pixels
@@ -87,14 +97,14 @@ def AddSymbol(x_pos,y_pos,place):
     global start_x, start_y, end_x, end_y, old_start_pos_x, old_start_pos_y,old_end_pos_x,old_end_pos_y
     if button_clicked == 1:   # Left Click - Start Point
         RemoveSymbolFromGrid('Start')
-        pygame.draw.circle(win,(0,0,250),(x_pos+15,y_pos+15), 10)
+        pygame.draw.rect(win, (0,0,250), (x_pos,y_pos,30,30))
         start_x = (place%30) + 1   # x value as an index 
         start_y = (place//30) + 1  # y value as an index
         old_start_pos_x = x_pos   # Stores the values so that if the user adds a new start point, old one will be deleted
         old_start_pos_y = y_pos
     elif button_clicked == 3:  # Right Click - Endpoint
         RemoveSymbolFromGrid('End')
-        pygame.draw.circle(win,(250,0,0),(x_pos+15,y_pos+15), 10)
+        pygame.draw.rect(win, (250,0,0), (x_pos,y_pos,30,30))
         end_x = (place%30) + 1    # x value as an index 
         end_y = (place//30) + 1   # y value as an index
         old_end_pos_x = x_pos   # Stores the values so that if the user adds a new start point, old one will be deleted
@@ -105,7 +115,7 @@ def AddSymbol(x_pos,y_pos,place):
             blocks.remove([(place//30) + 1,(place%30) + 1])
         else:
             blocks.append([(place//30) + 1,(place%30) + 1])
-            pygame.draw.circle(win,(178,40,162),(x_pos+15,y_pos+15), 10)
+            pygame.draw.rect(win, (178,40,162), (x_pos,y_pos,30,30))
 
 run = True
 
@@ -164,13 +174,13 @@ def ChangeBlockColors(movement,mode):
             count += 1
         else:
             if showPath:
-                pygame.draw.circle(win,(0,0,250),(-15 + start_x *40 ,-15 + start_y *40), 10)        
+                pygame.draw.rect(win,(0,0,250),(-30 + start_x *40 ,-30 + start_y *40,30,30))        
                 pygame.draw.rect(win, (230,230,0), (x_value,y_value,30,30))
 
     if mode == 'Final':  
         pygame.draw.rect(win, (0,230,0), (-30 + start_x *40,-30 + start_y *40,30,30))        
-        pygame.draw.circle(win,(250,0,0),(x_value+15,y_value+15), 10)
-        pygame.draw.circle(win,(0,0,250),(-15 + start_x *40 ,-15 + start_y *40), 10) 
+        pygame.draw.rect(win,(250,0,0),(x_value,y_value,30,30))
+        pygame.draw.rect(win,(0,0,250),(-30 + start_x *40 ,-30 + start_y *40,30,30)) 
         
     pygame.display.update()
 
@@ -234,6 +244,8 @@ while run:
                     StartPathFinding()
                 except:
                     pass
+            if imageButton_background.collidepoint(position):
+                CaptureScreen()
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             try:   # To prevent crashing when the user didnt add both end and start points
                 StartPathFinding()
