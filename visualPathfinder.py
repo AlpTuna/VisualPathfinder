@@ -10,6 +10,7 @@ font3 = pygame.font.Font('freesansbold.ttf', 70)
 squares = []
 blocks = []
 showPath = True
+run = True
 passedBoxes = []
 
 
@@ -116,8 +117,6 @@ def AddSymbol(x_pos,y_pos,place):
         else:
             blocks.append([(place//30) + 1,(place%30) + 1])
             pygame.draw.rect(win, (178,40,162), (x_pos,y_pos,30,30))
-
-run = True
 
 def CheckAvailable(movement):
     line_checked = start_y
